@@ -54,6 +54,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PSO\App.cs" />
+    <Compile Include="PSO\Particle.cs" />
+    <Compile Include="PSO\Problem.cs" />
+    <Compile Include="PSO\ProblemConfig.cs" />
+    <Compile Include="PSO\ProblemSolver.cs" />
+    <Compile Include="PSO\Random.cs" />
+    <Compile Include="PSO\Sphere.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,8 +100,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PSO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
