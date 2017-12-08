@@ -2,9 +2,9 @@
 
 namespace dotNet.PSO
 {
-    public class App
+    public class PSO
     {
-        public App()
+        public PSO()
         {
             var start = DateTime.Now;
 
@@ -32,6 +32,9 @@ namespace dotNet.PSO
             problemSolver.Initialize();
 
             var (globalbest, population) = problemSolver.ParticleSwarmOptimization();
+
+            Console.WriteLine(@"Best particle");
+            globalbest.Position.ForEach(x => Console.Write($@" {x}"));
 
             Console.WriteLine($@"Elapsed time is {(DateTime.Now - start).TotalSeconds} second(s)");
         }

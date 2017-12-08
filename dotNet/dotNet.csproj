@@ -54,12 +54,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PSO\App.cs" />
+    <Compile Include="Extensions\ListExtension.cs" />
+    <Compile Include="PSO\PSO.cs" />
     <Compile Include="PSO\Particle.cs" />
     <Compile Include="PSO\Problem.cs" />
     <Compile Include="PSO\ProblemConfig.cs" />
     <Compile Include="PSO\ProblemSolver.cs" />
-    <Compile Include="PSO\Random.cs" />
+    <Compile Include="Extensions\RandomExtension.cs" />
     <Compile Include="PSO\Sphere.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
