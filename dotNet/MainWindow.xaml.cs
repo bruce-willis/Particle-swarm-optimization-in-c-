@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 
 namespace dotNet
 {
@@ -23,6 +26,18 @@ namespace dotNet
         public MainWindow()
         {
             InitializeComponent();
+
+            var pso = new PSO.PSO();
+            Values = pso.GetBestCosts();
+            Time = $"Elapsed time is {pso.ElapsedTime}.\nMinimum cost is {pso.GlobalBest.Cost}";
+
+            DataContext = this;
         }
+
+        public ChartValues<ObservableValue> Values { get; set; }
+
+        public string Time { get; set; }
+
+        public SeriesCollection Series { get; set; }
     }
 }

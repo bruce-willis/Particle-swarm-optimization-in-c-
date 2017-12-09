@@ -14,9 +14,12 @@ namespace dotNet.PSO
 
         private List<Particle> _population;
 
+        private List<double> _costs;
+
         public ProblemSolver(ProblemConfig problemConfig)
         {
             _problemConfig = problemConfig;
+            _costs = new List<double>(problemConfig.MaxIterations);
         }
 
         public void Initialize()
@@ -44,7 +47,7 @@ namespace dotNet.PSO
         }
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        public (Particle, List<Particle>) ParticleSwarmOptimization()
+        public (Particle, List<double>) ParticleSwarmOptimization()
         {
             for (var iteration = 0; iteration < _problemConfig.MaxIterations; ++iteration)
             {
@@ -88,10 +91,11 @@ namespace dotNet.PSO
                     }
                 }
 
+                _costs.Add(_globalBest.Cost);
                 _problemConfig.InertiaWeight *= _problemConfig.InertiaWeightDamp;
                 Console.WriteLine($@"Iteration {iteration}: Best cost = {_globalBest.Cost}");
             }
-            return (_globalBest, _population);
+            return (_globalBest, _costs);
         }
     }
 }

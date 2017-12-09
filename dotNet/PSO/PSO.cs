@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using LiveCharts;
+using LiveCharts.Defaults;
 
 namespace dotNet.PSO
 {
+    // ReSharper disable once InconsistentNaming
     public class PSO
     {
+        private readonly List<double> _costs;
+        public readonly Particle GlobalBest;
+        public double ElapsedTime { get; private set; }
         public PSO()
         {
             var start = DateTime.Now;
@@ -31,12 +39,18 @@ namespace dotNet.PSO
 
             problemSolver.Initialize();
 
-            var (globalbest, population) = problemSolver.ParticleSwarmOptimization();
-
+            (GlobalBest, _costs) = problemSolver.ParticleSwarmOptimization();
             Console.WriteLine(@"Best particle");
-            globalbest.Position.ForEach(x => Console.Write($@" {x}"));
+            GlobalBest.Position.ForEach(x => Console.Write($@" {x}"));
 
+
+            ElapsedTime = (DateTime.Now - start).TotalSeconds;
             Console.WriteLine($@"Elapsed time is {(DateTime.Now - start).TotalSeconds} second(s)");
+        }
+
+        public ChartValues<ObservableValue> GetBestCosts()
+        {
+            return new ChartValues<ObservableValue>(_costs.Select(x => new ObservableValue(x)));
         }
     }
 }
