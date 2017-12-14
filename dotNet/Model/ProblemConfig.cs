@@ -1,4 +1,4 @@
-﻿namespace dotNet.PSO
+﻿namespace dotNet.Model
 {
     public class ProblemConfig
     {

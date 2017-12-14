@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
-namespace dotNet.PSO
+namespace dotNet.Model
 {
     public class Problem
     {

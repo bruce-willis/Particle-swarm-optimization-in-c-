@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,18 +27,17 @@ namespace dotNet
         public MainWindow()
         {
             InitializeComponent();
-
-            var pso = new PSO.PSO();
-            Values = pso.GetBestCosts();
-            Time = $"Elapsed time is {pso.ElapsedTime}.\nMinimum cost is {pso.GlobalBest.Cost}";
-
-            DataContext = this;
+            DataContext = new ViewModel.PSOViewModel(); //pso;
         }
 
-        public ChartValues<ObservableValue> Values { get; set; }
+        private void IntegerFormat(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
+        }
 
-        public string Time { get; set; }
-
-        public SeriesCollection Series { get; set; }
+        private void DoubleFormat(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = Regex.IsMatch(e.Text, "[^0-9.]+");
+        }
     }
 }

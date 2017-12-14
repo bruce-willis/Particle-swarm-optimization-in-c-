@@ -2,29 +2,24 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using dotNet.Extensions;
+using dotNet.Model;
 
-namespace dotNet.PSO
+namespace dotNet.Service
 {
-    public class ProblemSolver
+    public class PSOSolver
     {
-        private readonly ProblemConfig _problemConfig;
+        private ProblemConfig _problemConfig;
 
         private Particle _globalBest;
 
         private List<Particle> _population;
 
-        private List<double> _costs;
-
-        public ProblemSolver(ProblemConfig problemConfig)
+        public void Initialize(ProblemConfig problemConfig)
         {
             _problemConfig = problemConfig;
-            _costs = new List<double>(problemConfig.MaxIterations);
-        }
-
-        public void Initialize()
-        {
-            _globalBest = new Particle {Cost = double.MaxValue};
+            _globalBest = new Particle { Cost = double.MaxValue };
 
             _population = Enumerable.Range(0, _problemConfig.PopulationSize).Select(_ => new Particle
             {
@@ -45,11 +40,11 @@ namespace dotNet.PSO
                 }
             }
         }
-
+        
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        public (Particle, List<double>) ParticleSwarmOptimization()
+        public async Task<double> PerformIteraration()
         {
-            for (var iteration = 0; iteration < _problemConfig.MaxIterations; ++iteration)
+            await Task.Run(() =>
             {
                 foreach (var particle in _population)
                 {
@@ -90,12 +85,9 @@ namespace dotNet.PSO
                         }
                     }
                 }
-
-                _costs.Add(_globalBest.Cost);
-                _problemConfig.InertiaWeight *= _problemConfig.InertiaWeightDamp;
-                Console.WriteLine($@"Iteration {iteration}: Best cost = {_globalBest.Cost}");
-            }
-            return (_globalBest, _costs);
+            });
+            _problemConfig.InertiaWeight *= _problemConfig.InertiaWeightDamp;
+            return _globalBest.Cost;
         }
     }
 }
