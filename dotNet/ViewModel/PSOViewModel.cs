@@ -79,22 +79,24 @@ namespace dotNet.ViewModel
             set => SetProperty(ref _inertiaWeightDamp, value);
         }
 
-        private readonly Dictionary<string, Func<List<double>, double>> _functions = new Dictionary<string, Func<List<double>, double>>
+        private static readonly Dictionary<string, (Func<List<double>, double> function, string latex)> Functions = new Dictionary<string, (Func<List<double>, double>, string)>
         {
-            ["Сферическая функция"] = Model.Functions.SphereFunction,
-            ["Функция Гриванка"] = Model.Functions.GriewankFunction,
-            ["Функция Растригина"] = Model.Functions.RastriginFunction,
-            ["Функция Розенброка"] = Model.Functions.RosenbrockFunction
+            ["Сферическая функция"] = (Model.Functions.SphereFunction, Model.Functions.SphereFunctionLatex()),
+            ["Функция Гриванка"] = (Model.Functions.GriewankFunction, Model.Functions.GriewankFunctionLatex()),
+            ["Функция Растригина"] = (Model.Functions.RastriginFunction, Model.Functions.RastriginFunctionLatex()),
+            ["Функция Розенброка"] = (Model.Functions.RosenbrockFunction, Model.Functions.RosenbrockFunctionLatex())
         };
 
-        private string _selectedFunction = "Сферическая функция";
+        private string _selectedFunction = Functions.Keys.First();
         public string SelectedFunction
         {
             get => _selectedFunction;
-            set => SetProperty(ref _selectedFunction, value);
+            set { SetProperty(ref _selectedFunction, value); OnPropertyChanged(nameof(FunctionLatex));}
         }
 
-        public List<string> Functions => _functions.Keys.ToList();
+        public List<string> FunctionsNames => Functions.Keys.ToList();
+
+        public string FunctionLatex => Functions[_selectedFunction].latex;
 
         private ObservableCollection<string> _iterations = new ObservableCollection<string>();
 
@@ -140,7 +142,7 @@ namespace dotNet.ViewModel
 
             var problem = new Problem
             {
-                CostFunction = _functions[_selectedFunction],
+                CostFunction = Functions[_selectedFunction].function,
                 VariablesNumber = VariablesNumber,
                 VariablesMinimum = VariablesMinimum,
                 VariablesMaximum = VariablesMaximum

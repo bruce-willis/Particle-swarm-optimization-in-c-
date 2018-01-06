@@ -7,13 +7,14 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:numeric="http://gu.se/NumericInput"
         xmlns:vmodel="clr-namespace:dotNet.ViewModel"
+        xmlns:controls="clr-namespace:WpfMath.Controls;assembly=WpfMath"
         mc:Ignorable="d"
-        Title="MainWindow" WindowState="Maximized">
+        Title="Метод роя частиц" WindowState="Maximized">
     <Window.Resources>
         <vmodel:PSOViewModel x:Key="Vm"/>
     </Window.Resources>
 
-    <Grid DataContext="{Binding Source={StaticResource Vm}}">
+    <Grid DataContext="{Binding Source={StaticResource Vm}}"  Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
@@ -56,9 +57,12 @@
             <Label HorizontalAlignment="Center" Content="Коэффициент затухания инерционного веса"/>
             <numeric:DoubleBox Width="100"  HorizontalAlignment="Center" HorizontalContentAlignment="Center" Value="{Binding InertiaWeightDamp, ValidatesOnNotifyDataErrors=True}"
                                ValidationTrigger="PropertyChanged" PreviewTextInput="DoubleFormat"/>
-            <ComboBox ItemsSource="{Binding Functions}"
+            <ComboBox ItemsSource="{Binding FunctionsNames}"
                       SelectedItem="{Binding SelectedFunction}"
-                      IsSynchronizedWithCurrentItem="True"/>
+                      IsSynchronizedWithCurrentItem="True" Margin="0, 50" HorizontalAlignment="Center"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="20, 0">
+                <controls:FormulaControl  Formula="{Binding FunctionLatex}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </ScrollViewer>
             <Button Content="Запустить алгоритм" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0" Command="{Binding PerformSwarmOptimizationCommand}" IsDefault="True" IsEnabled="{Binding IsNotBusy}"/>
 
         </StackPanel>
